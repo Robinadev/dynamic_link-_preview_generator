@@ -32,6 +32,9 @@ function App() {
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      url: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -59,16 +62,15 @@ function App() {
           className="flex w-full gap-2 items-center mb-10"
         >
           <FormField
-            render={({ field }) => (
-              <FormItem className="flex-1">
+            name="url"
+            render={({ field, fieldState }) => (
+              <FormItem>
                 <FormControl>
                   <Input {...field} placeholder="Enter Url" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>{fieldState.error?.message}</FormMessage>
               </FormItem>
             )}
-            name="url"
-            control={form.control}
           />
           <Button type="submit">Generate</Button>
         </form>
